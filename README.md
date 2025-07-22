@@ -42,8 +42,8 @@ NUVI is an innovative AI-powered therapy application that provides real-time, em
 
 3. **Set up environment variables**
    ```bash
-   # Create a .env file in the root directory
-   echo "VITE_GEMINI_API_KEY=your_api_key_here" > .env
+   # Enter your Gemini API key into the .env file in the root directory
+   Ex: VITE_GEMINI_API_KEY=your_api_key_here
    ```
    
    **Note**: Replace `your_api_key_here` with your actual Google Gemini API key.
