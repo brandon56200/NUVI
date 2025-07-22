@@ -109,7 +109,7 @@ NUVI is an innovative AI-powered therapy application that provides real-time, em
 
 ### 🤖 Gemini AI Integration
 
-NUVI leverages Google's Gemini 1.5 Flash model for:
+NUVI leverages Google's Gemini 2.0 Flash (gemini-2.0-flash-exp) model for:
 - **Real-time conversation**: Low-latency, natural dialogue
 - **Context awareness**: Remembers session context and user preferences
 - **Emotional intelligence**: Responds to detected emotional states
