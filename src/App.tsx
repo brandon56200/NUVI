@@ -166,7 +166,7 @@ function AppContent() {
     try {
       // Create new config with topics
       const newConfig = {
-        model: "gemini-1.5-flash-exp",
+        model: "gemini-2.0-flash-exp",
         responseModalities: [Modality.AUDIO],
         speechConfig: {
           voiceConfig: { prebuiltVoiceConfig: { voiceName: "Aoede" } },
