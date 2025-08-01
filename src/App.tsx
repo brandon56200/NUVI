@@ -2,6 +2,7 @@ import { useRef, useState, useCallback } from "react";
 import { LiveAPIProvider, useLiveAPIContext } from "./contexts/LiveAPIContext";
 import { TopicPicker } from "./components/TopicPicker";
 import { ConversationView } from "./components/ConversationView";
+import { AudioCheckView } from "./components/AudioCheckView";
 import cn from "classnames";
 import { LiveClientOptions } from "./types";
 import { Modality } from "@google/genai";
@@ -129,7 +130,7 @@ ${topicsList}
 Please ensure you follow this exact conversation flow and make the selected topics clear to the user.`;
 };
 
-type AppStep = 'topic-selection' | 'conversation';
+type AppStep = 'topic-selection' | 'audio-check' | 'conversation';
 
 function AppContent() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -139,13 +140,13 @@ function AppContent() {
   const [isConnecting, setIsConnecting] = useState(false);
   const { setConfig, connected, connectWithConfig, disconnect } = useLiveAPIContext();
 
-  // Function to handle topic selection and start session
+  // Function to handle topic selection and move to audio check
   const handleTopicsSelected = useCallback(async (topics: string[]) => {
     console.log("handleTopicsSelected called with topics:", topics);
     setSelectedTopics(topics);
     
-    // Simply switch to conversation view - no connection yet
-    setCurrentStep('conversation');
+    // Move to audio check step before conversation
+    setCurrentStep('audio-check');
     
   }, []);
 
@@ -156,6 +157,17 @@ function AppContent() {
       disconnect();
     }
   }, [connected, disconnect]);
+
+  // Function to handle successful audio check - proceed to conversation
+  const handleAudioCheckPassed = useCallback(() => {
+    console.log("Audio check passed, proceeding to conversation");
+    setCurrentStep('conversation');
+  }, []);
+
+  // Function to go back from audio check to topic selection
+  const handleBackFromAudioCheck = useCallback(() => {
+    setCurrentStep('topic-selection');
+  }, []);
 
   // Function to start the conversation (called from ConversationView)
   const handleStartConversation = useCallback(async () => {
@@ -219,21 +231,27 @@ function AppContent() {
             onContinue={() => {}} // This is handled in onTopicsSelected
             isLoading={isConnecting}
           />
+        ) : currentStep === 'audio-check' ? (
+          <AudioCheckView 
+            onAudioCheckPassed={handleAudioCheckPassed}
+            onBackToTopics={handleBackFromAudioCheck}
+            selectedTopics={selectedTopics}
+          />
         ) : (
-                      <ConversationView 
-              selectedTopics={selectedTopics}
-              onBackToTopics={handleBackToTopics}
-              onStartConversation={handleStartConversation}
-              isConnected={connected}
-              isConnecting={isConnecting}
-              externalVideoRef={videoRef}
-              onVideoStreamChange={setVideoStream}
-            />
+          <ConversationView 
+            selectedTopics={selectedTopics}
+            onBackToTopics={handleBackToTopics}
+            onStartConversation={handleStartConversation}
+            isConnected={connected}
+            isConnecting={isConnecting}
+            externalVideoRef={videoRef}
+            onVideoStreamChange={setVideoStream}
+          />
         )}
         
         <video
           className={cn("stream", {
-            hidden: !videoRef.current || !videoStream || currentStep === 'topic-selection',
+            hidden: !videoRef.current || !videoStream || currentStep === 'topic-selection' || currentStep === 'audio-check',
           })}
           ref={videoRef}
           autoPlay

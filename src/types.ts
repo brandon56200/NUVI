@@ -80,3 +80,42 @@ export type LiveClientToolResponse = {
   // Add properties as needed based on your usage
   [key: string]: any;
 };
+
+/**
+ * Audio test results for microphone and audio system validation
+ */
+export type AudioTestResults = {
+  timestamp: number;
+  sampleRate: number;
+  echoTest: {
+    passed: boolean;
+    echoLevel: number;
+  };
+  microphoneTest: {
+    level: number;
+    noise: number;
+  };
+  overallPassed: boolean;
+};
+
+/**
+ * Audio check progress updates for real-time UI feedback
+ */
+export type AudioCheckProgress = {
+  stage: 'init' | 'sample-rate' | 'echo-test' | 'mic-test' | 'complete' | 'error';
+  message: string;
+  progress: number; // 0-100
+  results?: Partial<AudioTestResults>;
+};
+
+/**
+ * Audio check configuration options
+ */
+export type AudioCheckConfig = {
+  echoTestDuration?: number; // in seconds, default 3
+  micTestDuration?: number; // in seconds, default 2
+  minMicLevel?: number; // minimum microphone sensitivity, default 0.001
+  maxBackgroundNoise?: number; // maximum allowed background noise, default 0.005
+  echoThreshold?: number; // echo level threshold, default 0.05
+  targetSampleRate?: number; // minimum required sample rate, default 24000
+};
