@@ -42,8 +42,8 @@ NUVI is an innovative AI-powered therapy application that provides real-time, em
 
 3. **Set up environment variables**
    ```bash
-   # Create a .env file in the root directory
-   echo "VITE_GEMINI_API_KEY=your_api_key_here" > .env
+   # Enter your Gemini API key into the .env file in the root directory
+   Ex: VITE_GEMINI_API_KEY=your_api_key_here
    ```
    
    **Note**: Replace `your_api_key_here` with your actual Google Gemini API key.
@@ -109,7 +109,7 @@ NUVI is an innovative AI-powered therapy application that provides real-time, em
 
 ### 🤖 Gemini AI Integration
 
-NUVI leverages Google's Gemini 1.5 Flash model for:
+NUVI leverages Google's Gemini 2.0 Flash (gemini-2.0-flash-exp) model for:
 - **Real-time conversation**: Low-latency, natural dialogue
 - **Context awareness**: Remembers session context and user preferences
 - **Emotional intelligence**: Responds to detected emotional states
